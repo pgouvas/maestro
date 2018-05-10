@@ -18,7 +18,8 @@ public class TreeUtil {
             return node;
         } else {
             for (Node nd : node.getChildren()) {
-                return searchTree(nd, nodename);
+                Node<String> temp = searchTree(nd, nodename);
+                if (temp!=null) return temp;
             }
         }
         return null;

@@ -2,6 +2,7 @@ package eu.maestro;
 
 import eu.maestro.orchestrator.Orchestrator;
 import eu.maestro.util.Node;
+import eu.maestro.util.TreeUtil;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -15,10 +16,13 @@ public class Helper {
     
     public static void main(String[] args) throws InterruptedException, IOException {
         Node<String> tree = Helper.createSampleTree();
+        
         Helper.bootOrchestrator(tree, "12345");
+        
         //Tests
 //        TreeUtil.printTree(tree);
-//        Node<String> node = TreeUtil.searchTree(tree, "root");
+//        Node<String> node = TreeUtil.searchTree(tree, "node11");
+//        logger.info( ""+ node.getChildren().size() );
 //        if (node!=null) logger.info(node.toString());
 //        List list = TreeUtil.listifyTree(tree);
 //        logger.info(list.size()+"");        
