@@ -22,11 +22,12 @@ public class Orchestrator implements Runnable {
     private static final Logger logger = Logger.getLogger(Orchestrator.class.getName());
     private Node<String> tree;
     private String deploymentid;
+    DefaultCacheManager cachemngr;    
     Cache<String, String> cache;
 
     //Global Strings
     public static final int ORCHESTRATOR_SLEEP_CYCLE_MILLISECONDS = 1000;    
-    public static final int MAX_TIMEOUT_FOR_DEPLOYMENT_MILLISECONDS = 20000;
+    public static final int MAX_TIMEOUT_FOR_DEPLOYMENT_MILLISECONDS = 60000;
 
     //current state
     private boolean terminated = false;
@@ -34,9 +35,9 @@ public class Orchestrator implements Runnable {
     public Orchestrator(Node<String> tree, String deploymentid) {
         this.tree = tree;
         this.deploymentid = deploymentid;
-        DefaultCacheManager cachemngr;
+
         try {
-            cachemngr = new DefaultCacheManager("infinispan.xml");
+            cachemngr = new DefaultCacheManager("infinispan.xml"); 
             cache = cachemngr.getCache();
         } catch (IOException ex) {
             logger.log(Level.SEVERE, null, ex);
@@ -51,6 +52,7 @@ public class Orchestrator implements Runnable {
         for (String nodename : nodes) {
             Agent agent = new Agent(tree, deploymentid, nodename);
             Thread thread = new Thread(agent);
+            thread.setName(""+deploymentid+"_"+nodename);
             thread.setPriority(Thread.MIN_PRIORITY);
             thread.start();
             //white to key-value
@@ -87,6 +89,7 @@ public class Orchestrator implements Runnable {
         }//terminated
         
         logger.info("Terminating Orchestrator for " + deploymentid);
+        cachemngr.stop();
         
     }//EoM
 

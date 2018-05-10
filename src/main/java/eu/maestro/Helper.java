@@ -1,11 +1,8 @@
 package eu.maestro;
 
-import eu.maestro.agent.Agent;
 import eu.maestro.orchestrator.Orchestrator;
 import eu.maestro.util.Node;
-import eu.maestro.util.TreeUtil;
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -43,6 +40,7 @@ public class Helper {
     private static void bootOrchestrator(Node<String> tree,String deploymentid){
         Orchestrator orchestrator = new Orchestrator(tree,deploymentid);
         Thread thread = new Thread(orchestrator);
+        thread.setName(""+deploymentid);
         thread.setPriority(Thread.MIN_PRIORITY);
         thread.start();
     }//EoC
